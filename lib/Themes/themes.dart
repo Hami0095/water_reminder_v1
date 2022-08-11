@@ -22,7 +22,7 @@ class MyThemes {
       ),
     ),
     iconTheme: const IconThemeData(
-      color: Color.fromARGB(255, 181, 202, 244),
+      color: Color.fromARGB(255, 103, 152, 249),
     ),
     drawerTheme: const DrawerThemeData(
       backgroundColor: Color.fromARGB(255, 51, 51, 51),

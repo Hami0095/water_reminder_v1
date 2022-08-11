@@ -1,6 +1,11 @@
 import 'package:flutter/material.dart';
+
 import 'package:roundcheckbox/roundcheckbox.dart';
-import 'package:water_reminder_v1/screens/weight_screen.dart';
+
+import 'package:cloud_firestore/cloud_firestore.dart';
+
+import '../model/data.dart';
+import '../screens/weight_screen.dart';
 
 class GenderScreen extends StatefulWidget {
   static const routeName = "/gender-screen";
@@ -11,9 +16,27 @@ class GenderScreen extends StatefulWidget {
 }
 
 class _GenderScreenState extends State<GenderScreen> {
+  final databaseReference = FirebaseFirestore.instance;
+  Data data = Data(
+    uid: "user1",
+    gender: "",
+    bedTime: "",
+    wakeTime: "",
+    weight: "",
+  );
+
+  void updateRecord() async {
+    await databaseReference.collection("data").doc(data.uid).set({
+      'gender': data.gender,
+      'bedTime': data.bedTime,
+      'wakeTime': data.wakeTime,
+      'weight': data.weight,
+    });
+  }
+
   @override
   Widget build(BuildContext context) {
-    bool _flag = false;
+    bool flag = false;
     int choose = 0;
     return Scaffold(
         backgroundColor: Theme.of(context).scaffoldBackgroundColor,
@@ -49,15 +72,16 @@ class _GenderScreenState extends State<GenderScreen> {
                           children: [
                             RoundCheckBox(
                               onTap: (selected) {
-                                if (_flag == true) {
-                                  _flag = false;
+                                if (flag == true) {
+                                  flag = false;
+
                                   setState(() {
                                     selected = false;
-                                    _flag = selected!;
-                                    choose = 1;
+                                    flag = selected!;
                                   });
                                 }
-                                _flag = selected!;
+                                flag = selected!;
+                                choose = 1;
                               },
                               size: 25,
                               checkedWidget: Icon(
@@ -87,15 +111,16 @@ class _GenderScreenState extends State<GenderScreen> {
                           children: [
                             RoundCheckBox(
                               onTap: (selected) {
-                                if (_flag == true) {
-                                  _flag = false;
+                                if (flag == true) {
+                                  flag = false;
                                   setState(() {
                                     selected = false;
-                                    choose = 2;
-                                    _flag = selected!;
+                                    print(choose);
+                                    flag = selected!;
                                   });
                                 }
-                                _flag = selected!;
+                                choose = 2;
+                                flag = selected!;
                               },
                               checkedWidget: Icon(
                                 Icons.circle,
@@ -134,7 +159,51 @@ class _GenderScreenState extends State<GenderScreen> {
                     setState(
                       () {
                         //TODO add the gender to the database
-                        Navigator.of(context).pushNamed(WeightScreen.routeName);
+                        if (choose == 0) {
+                          showDialog(
+                            context: context,
+                            builder: (context) {
+                              return AlertDialog(
+                                title: const Text(
+                                  "Opps Sorry",
+                                ),
+                                content: const Text("Please choose one gender"),
+                                actions: [
+                                  TextButton(
+                                    onPressed: () {
+                                      Navigator.of(context).pop();
+                                    },
+                                    child: Column(
+                                      children: [
+                                        Divider(
+                                          color: Theme.of(context).dividerColor,
+                                        ),
+                                        const Text(
+                                          "OK",
+                                        ),
+                                        Divider(
+                                          color: Theme.of(context).dividerColor,
+                                        ),
+                                      ],
+                                    ),
+                                  ),
+                                ],
+                              );
+                            },
+                          );
+                        } else {
+                          if (choose == 1) {
+                            data.gender = "Male";
+                            updateRecord();
+                          } else if (choose == 2) {
+                            data.gender = "Female";
+                            updateRecord();
+                          }
+                          Navigator.of(context).pushNamed(
+                            WeightScreen.routeName,
+                            arguments: data,
+                          );
+                        }
                       },
                     );
                   },

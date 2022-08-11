@@ -1,5 +1,8 @@
 import 'package:flutter/material.dart';
+
 import 'package:shared_preferences/shared_preferences.dart';
+import 'package:firebase_core/firebase_core.dart';
+
 import 'package:water_reminder_v1/Themes/themes.dart';
 import 'package:water_reminder_v1/pages/home_page.dart';
 import 'package:water_reminder_v1/screens/home_screen.dart';
@@ -13,8 +16,8 @@ late int initScreen;
 
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
+  await Firebase.initializeApp();
   SharedPreferences preferences = await SharedPreferences.getInstance();
-
   await preferences.setInt(HomePage.routeName, 1);
   initScreen = await preferences.getInt(GenderScreen.routeName) ?? 0;
   runApp(const MyApp());

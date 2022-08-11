@@ -1,13 +1,24 @@
 import 'package:flutter/material.dart';
 
+import '../model/data.dart';
+
 class HomeScreen extends StatelessWidget {
-  const HomeScreen({Key? key}) : super(key: key);
+  final double intake;
+  HomeScreen({
+    Key? key,
+    required this.intake,
+  }) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
-    return const SafeArea(
+    return SafeArea(
       child: Scaffold(
-        body: Text("this is home!"),
+        body: Column(
+          children: [
+            const Text("this is home!"),
+            Text("Water Intake: $intake ml"),
+          ],
+        ),
       ),
     );
   }
