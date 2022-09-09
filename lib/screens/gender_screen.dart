@@ -16,24 +16,7 @@ class GenderScreen extends StatefulWidget {
 }
 
 class _GenderScreenState extends State<GenderScreen> {
-  final databaseReference = FirebaseFirestore.instance;
-  Data data = Data(
-    uid: "user1",
-    gender: "",
-    bedTime: "",
-    wakeTime: "",
-    weight: "",
-  );
-
-  void updateRecord() async {
-    await databaseReference.collection("data").doc(data.uid).set({
-      'gender': data.gender,
-      'bedTime': data.bedTime,
-      'wakeTime': data.wakeTime,
-      'weight': data.weight,
-    });
-  }
-
+//TODO we are going to use our provider here, and provider will manage the firebase stuff all at one place!
   @override
   Widget build(BuildContext context) {
     bool flag = false;
@@ -45,7 +28,8 @@ class _GenderScreenState extends State<GenderScreen> {
             child: Column(
               mainAxisAlignment: MainAxisAlignment.spaceEvenly,
               children: [
-                Container(
+                // TextBox
+                SizedBox(
                   width: MediaQuery.of(context).size.width * 0.85,
                   child: Card(
                     color: const Color.fromARGB(255, 153, 202, 241),
@@ -192,6 +176,7 @@ class _GenderScreenState extends State<GenderScreen> {
                             },
                           );
                         } else {
+                          //TODO lets see it later ho ye rha hai k, mujy abdata ko pass krna parygain firebase provider
                           if (choose == 1) {
                             data.gender = "Male";
                             updateRecord();
@@ -207,7 +192,7 @@ class _GenderScreenState extends State<GenderScreen> {
                       },
                     );
                   },
-                  // style:
+                  // Continue button:
                   child: Container(
                     width: 100,
                     child: Row(

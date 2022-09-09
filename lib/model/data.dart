@@ -1,8 +1,8 @@
 import 'dart:convert';
 
 class Data {
-  String gender;
   String uid;
+  String gender;
   String weight;
   String wakeTime;
   String bedTime;
