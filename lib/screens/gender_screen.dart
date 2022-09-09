@@ -176,7 +176,7 @@ class _GenderScreenState extends State<GenderScreen> {
                             },
                           );
                         } else {
-                          //TODO lets see it later ho ye rha hai k, mujy abdata ko pass krna parygain firebase provider
+                          //TODO lets see it later ho ye rha hai k, mujy ab data ko pass krna paryga in firebase provider
                           if (choose == 1) {
                             data.gender = "Male";
                             updateRecord();
