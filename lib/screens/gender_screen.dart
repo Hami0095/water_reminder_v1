@@ -7,7 +7,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:water_reminder_v1/Providers/firebase_provider.dart';
 import 'package:water_reminder_v1/widgets/continue_btn.dart';
 
-import '../model/data.dart';
+import '../model/user_data.dart';
 import '../screens/weight_screen.dart';
 
 class GenderScreen extends StatefulWidget {

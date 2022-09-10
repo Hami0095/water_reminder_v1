@@ -1,10 +1,10 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 
-import '../model/data.dart';
+import '../model/user_data.dart';
 
 class FirebaseProvider extends ChangeNotifier {
-  Data tempdata = Data(
+  UserData tempdata = UserData(
     uid: "user1",
     gender: "",
     bedTime: "",
@@ -14,12 +14,12 @@ class FirebaseProvider extends ChangeNotifier {
 
   final databaseReference = FirebaseFirestore.instance;
 
-  final List<Data> _dataFromFirebase = [];
-  List<Data> get dataFromFirebase {
+  final List<UserData> _dataFromFirebase = [];
+  List<UserData> get dataFromFirebase {
     return _dataFromFirebase;
   }
 
-  Data findByUID(String id) {
+  UserData findByUID(String id) {
     return dataFromFirebase.firstWhere((element) => element.uid == id);
   }
 

@@ -3,7 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:datetime_picker_formfield/datetime_picker_formfield.dart';
 import 'package:intl/intl.dart';
 
-import '../model/data.dart';
+import '../model/user_data.dart';
 import '../pages/home_page.dart';
 
 class SleepCycleScreen extends StatefulWidget {
@@ -22,7 +22,7 @@ class _SleepCycleScreenState extends State<SleepCycleScreen> {
   final _bedTimeController = TextEditingController();
 
   final databaseReference = FirebaseFirestore.instance;
-  Data data = Data(
+  UserData data = UserData(
     uid: "user1",
     gender: "",
     bedTime: "",
@@ -33,7 +33,7 @@ class _SleepCycleScreenState extends State<SleepCycleScreen> {
   @override
   void didChangeDependencies() {
     if (isInit == false) {
-      data = ModalRoute.of(context)!.settings.arguments as Data;
+      data = ModalRoute.of(context)!.settings.arguments as UserData;
       isInit = true;
     }
     super.didChangeDependencies();

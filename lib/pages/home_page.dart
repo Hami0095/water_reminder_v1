@@ -2,7 +2,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:water_reminder_v1/screens/home_screen.dart';
 
-import '../model/data.dart';
+import '../model/user_data.dart';
 import '../screens/settings_page.dart';
 
 class HomePage extends StatefulWidget {
