@@ -14,6 +14,13 @@ class UserData {
     required this.bedTime,
   });
 
+  set(String g, String w, String wTime, String bTime) {
+    gender = g;
+    weight = w;
+    wakeTime = wTime;
+    bedTime = bTime;
+  }
+
   void setFromMap(Map<String, dynamic> map) {
     gender = map['gender'];
     weight = map['weight'] ?? '';
