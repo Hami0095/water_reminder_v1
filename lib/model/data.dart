@@ -1,12 +1,12 @@
 import 'dart:convert';
 
-class Data {
+class UserData {
   String uid;
   String gender;
   String weight;
   String wakeTime;
   String bedTime;
-  Data({
+  UserData({
     required this.gender,
     required this.uid,
     required this.weight,
@@ -32,8 +32,8 @@ class Data {
     };
   }
 
-  factory Data.fromMap(Map<String, dynamic> map) {
-    return Data(
+  factory UserData.fromMap(Map<String, dynamic> map) {
+    return UserData(
       gender: map['gender'] ?? '',
       weight: map['weight'] ?? '',
       wakeTime: map['wakeTime'] ?? '',
@@ -44,5 +44,6 @@ class Data {
 
   String toJson() => json.encode(toMap());
 
-  factory Data.fromJson(String source) => Data.fromMap(json.decode(source));
+  factory UserData.fromJson(String source) =>
+      UserData.fromMap(json.decode(source));
 }
