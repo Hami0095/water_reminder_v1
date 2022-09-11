@@ -36,8 +36,12 @@ class FirebaseProvider extends ChangeNotifier {
 
   void updateRecord(String id) async {
     try {
+      // ignore: iterable_contains_unrelated_type
+      if (!dataFromFirebase.any((element) => element.uid == tempdata.uid)) {
+        dataFromFirebase.add(tempdata);
+      }
       final data = dataFromFirebase.firstWhere((element) => element.uid == id);
-      await databaseReference.collection("data").doc(data.uid).set({
+      await databaseReference.collection("data").doc(tempdata.uid).set({
         'gender': data.gender,
         'bedTime': data.bedTime,
         'wakeTime': data.wakeTime,

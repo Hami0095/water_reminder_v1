@@ -75,7 +75,7 @@ class _GenderScreenState extends State<GenderScreen> {
         data.wakeTime,
         data.bedTime,
       );
-      Navigator.of(context).pushNamed(WeightScreen.routeName);
+      // Navigator.of(context).pushNamed(WeightScreen.routeName);
     }
   }
 
@@ -84,9 +84,11 @@ class _GenderScreenState extends State<GenderScreen> {
     final fbData = Provider.of<FirebaseProvider>(context);
     bool flag = false;
     return Scaffold(
-        backgroundColor: Theme.of(context).scaffoldBackgroundColor,
-        body: SafeArea(
-          child: Center(
+      backgroundColor: Theme.of(context).scaffoldBackgroundColor,
+      body: SafeArea(
+        child: Center(
+          child: Padding(
+            padding: const EdgeInsets.all(8.0),
             child: Column(
               mainAxisAlignment: MainAxisAlignment.spaceEvenly,
               children: [
@@ -192,7 +194,17 @@ class _GenderScreenState extends State<GenderScreen> {
                     ],
                   ),
                 ),
-                ContinueButton(
+                ElevatedButton(
+                  style: ButtonStyle(
+                    backgroundColor: MaterialStateProperty.resolveWith(
+                      (states) {
+                        if (states.contains(MaterialState.pressed)) {
+                          return const Color.fromARGB(255, 0, 50, 91);
+                        }
+                        return const Color.fromARGB(255, 188, 219, 245);
+                      },
+                    ),
+                  ),
                   onPressed: () {
                     setState(
                       () {
@@ -208,10 +220,28 @@ class _GenderScreenState extends State<GenderScreen> {
                       },
                     );
                   },
+                  child: SizedBox(
+                    width: 100,
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: [
+                        Text(
+                          "Continue",
+                          style: Theme.of(context).textTheme.bodyMedium,
+                        ),
+                        Icon(
+                          Icons.arrow_forward_ios_rounded,
+                          color: Theme.of(context).iconTheme.color,
+                        ),
+                      ],
+                    ),
+                  ),
                 ),
               ],
             ),
           ),
-        ));
+        ),
+      ),
+    );
   }
 }

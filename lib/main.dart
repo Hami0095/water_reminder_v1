@@ -1,7 +1,9 @@
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:firebase_core/firebase_core.dart';
+import 'package:water_reminder_v1/Providers/firebase_provider.dart';
 
 import 'package:water_reminder_v1/Themes/themes.dart';
 import 'package:water_reminder_v1/pages/home_page.dart';
@@ -31,16 +33,26 @@ class MyApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(
-        title: 'Flutter Demo',
-        theme: MyThemes.lightTheme,
-        home: const SplashScreen(route: OnBoardingPage()),
-        routes: {
-          GenderScreen.routeName: (ctx) => const GenderScreen(),
-          WeightScreen.routeName: (ctx) => const WeightScreen(),
-          SleepCycleScreen.routName: (ctx) => const SleepCycleScreen(),
-          HomePage.routeName: (ctx) => const HomePage(),
-          OnBoardingPage.routeName: (ctx) => const OnBoardingPage(),
-        });
+    return MultiProvider(
+      providers: [
+        ChangeNotifierProvider(
+          create: (ctx) => FirebaseProvider(),
+        ),
+      ],
+      builder: (context, _) {
+        return MaterialApp(
+          title: 'Water ReminderApp',
+          theme: MyThemes.lightTheme,
+          home: const SplashScreen(route: GenderScreen()),
+          routes: {
+            GenderScreen.routeName: (ctx) => const GenderScreen(),
+            WeightScreen.routeName: (ctx) => const WeightScreen(),
+            SleepCycleScreen.routName: (ctx) => const SleepCycleScreen(),
+            HomePage.routeName: (ctx) => const HomePage(),
+            OnBoardingPage.routeName: (ctx) => const OnBoardingPage(),
+          },
+        );
+      },
+    );
   }
 }
