@@ -2,7 +2,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:water_reminder_v1/screens/home_screen.dart';
 
-import '../model/data.dart';
+import '../model/user_data.dart';
 import '../screens/settings_page.dart';
 
 class HomePage extends StatefulWidget {
@@ -14,8 +14,9 @@ class HomePage extends StatefulWidget {
 }
 
 class _HomePageState extends State<HomePage> {
+  //TODO provider sy data nai laya abhi main!
   final databaseReference = FirebaseFirestore.instance;
-  var data = Data(
+  var data = UserData(
     uid: "user1",
     gender: "",
     bedTime: "",
@@ -44,10 +45,11 @@ class _HomePageState extends State<HomePage> {
     print(data.weight);
   }
 
+  //TODO yahan pe provider sy data nai aa rha abhi
   @override
   void didChangeDependencies() {
     if (isInit == false) {
-      data = ModalRoute.of(context)!.settings.arguments as Data;
+      data = ModalRoute.of(context)!.settings.arguments as UserData;
 
       getData();
       calculateWater();
