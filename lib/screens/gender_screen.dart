@@ -19,65 +19,7 @@ class GenderScreen extends StatefulWidget {
 }
 
 class _GenderScreenState extends State<GenderScreen> {
-  UserData data = UserData(
-    gender: "",
-    uid: "user1",
-    weight: "",
-    wakeTime: "",
-    bedTime: "",
-  );
-
   int choose = 0;
-
-  void setGender() {
-    String gender = " ";
-    if (choose == 0) {
-      showDialog(
-        context: context,
-        builder: (context) {
-          return AlertDialog(
-            title: const Text(
-              "Opps Sorry",
-            ),
-            content: const Text("Please choose one gender"),
-            actions: [
-              TextButton(
-                onPressed: () {
-                  Navigator.of(context).pop();
-                },
-                child: Column(
-                  children: [
-                    Divider(
-                      color: Theme.of(context).dividerColor,
-                    ),
-                    const Text(
-                      "OK",
-                    ),
-                    Divider(
-                      color: Theme.of(context).dividerColor,
-                    ),
-                  ],
-                ),
-              ),
-            ],
-          );
-        },
-      );
-    } else {
-      if (choose == 1) {
-        gender = "Male";
-      } else if (choose == 2) {
-        gender = "Female";
-      }
-      data.set(
-        gender,
-        data.weight,
-        data.wakeTime,
-        data.bedTime,
-      );
-      // Navigator.of(context).pushNamed(WeightScreen.routeName);
-    }
-  }
 
   @override
   Widget build(BuildContext context) {
@@ -208,15 +150,14 @@ class _GenderScreenState extends State<GenderScreen> {
                   onPressed: () {
                     setState(
                       () {
-                        setGender();
-                        fbData.tempdata.set(
-                          data.gender,
-                          data.bedTime,
-                          data.wakeTime,
-                          data.weight,
+                        fbData.tempData.set(
+                          choose == 0 ? "Male" : "Female",
+                          fbData.tempData.weight,
+                          fbData.tempData.wakeTime,
+                          fbData.tempData.bedTime,
                         );
-                        fbData.updateRecord(fbData.tempdata.uid);
-                        debugPrint(fbData.tempdata.gender);
+                        fbData.updateRecord(fbData.tempData.uid);
+                        debugPrint(fbData.tempData.gender);
                       },
                     );
                   },
