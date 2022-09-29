@@ -4,7 +4,7 @@ import 'package:flutter/material.dart';
 import '../model/user_data.dart';
 
 class FirebaseProvider extends ChangeNotifier {
-  UserData tempdata = UserData(
+  UserData tempData = UserData(
     uid: "user1",
     gender: "",
     bedTime: "",
@@ -37,11 +37,11 @@ class FirebaseProvider extends ChangeNotifier {
   void updateRecord(String id) async {
     try {
       // ignore: iterable_contains_unrelated_type
-      if (!dataFromFirebase.any((element) => element.uid == tempdata.uid)) {
-        dataFromFirebase.add(tempdata);
+      if (!dataFromFirebase.any((element) => element.uid == tempData.uid)) {
+        dataFromFirebase.add(tempData);
       }
       final data = dataFromFirebase.firstWhere((element) => element.uid == id);
-      await databaseReference.collection("data").doc(tempdata.uid).set({
+      await databaseReference.collection("data").doc(tempData.uid).set({
         'gender': data.gender,
         'bedTime': data.bedTime,
         'wakeTime': data.wakeTime,
