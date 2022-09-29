@@ -3,7 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:water_reminder_v1/screens/sleep_cycle_screen.dart';
 
-import '../model/data.dart';
+import '../model/user_data.dart';
 
 class WeightScreen extends StatefulWidget {
   static const routeName = "/weight-screen";
@@ -15,7 +15,7 @@ class WeightScreen extends StatefulWidget {
 
 class _WeightScreenState extends State<WeightScreen> {
   final databaseReference = FirebaseFirestore.instance;
-  Data data = Data(
+  UserData data = UserData(
     uid: "user1",
     gender: "",
     bedTime: "",
@@ -27,7 +27,7 @@ class _WeightScreenState extends State<WeightScreen> {
   @override
   void didChangeDependencies() {
     if (isInit == false) {
-      data = ModalRoute.of(context)!.settings.arguments as Data;
+      data = ModalRoute.of(context)!.settings.arguments as UserData;
       isInit = true;
       print(data);
     }

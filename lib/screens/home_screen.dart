@@ -1,10 +1,10 @@
 import 'package:flutter/material.dart';
 
-import '../model/data.dart';
+import '../model/user_data.dart';
 
 class HomeScreen extends StatelessWidget {
   final double intake;
-  HomeScreen({
+  const HomeScreen({
     Key? key,
     required this.intake,
   }) : super(key: key);

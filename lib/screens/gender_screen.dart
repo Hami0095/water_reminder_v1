@@ -1,10 +1,13 @@
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 
 import 'package:roundcheckbox/roundcheckbox.dart';
 
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:water_reminder_v1/Providers/firebase_provider.dart';
+import 'package:water_reminder_v1/widgets/continue_btn.dart';
 
-import '../model/data.dart';
+import '../model/user_data.dart';
 import '../screens/weight_screen.dart';
 
 class GenderScreen extends StatefulWidget {
@@ -16,36 +19,80 @@ class GenderScreen extends StatefulWidget {
 }
 
 class _GenderScreenState extends State<GenderScreen> {
-  final databaseReference = FirebaseFirestore.instance;
-  Data data = Data(
-    uid: "user1",
+  UserData data = UserData(
     gender: "",
-    bedTime: "",
-    wakeTime: "",
+    uid: "user1",
     weight: "",
+    wakeTime: "",
+    bedTime: "",
   );
 
-  void updateRecord() async {
-    await databaseReference.collection("data").doc(data.uid).set({
-      'gender': data.gender,
-      'bedTime': data.bedTime,
-      'wakeTime': data.wakeTime,
-      'weight': data.weight,
-    });
+  int choose = 0;
+
+  void setGender() {
+    String gender = " ";
+    if (choose == 0) {
+      showDialog(
+        context: context,
+        builder: (context) {
+          return AlertDialog(
+            title: const Text(
+              "Opps Sorry",
+            ),
+            content: const Text("Please choose one gender"),
+            actions: [
+              TextButton(
+                onPressed: () {
+                  Navigator.of(context).pop();
+                },
+                child: Column(
+                  children: [
+                    Divider(
+                      color: Theme.of(context).dividerColor,
+                    ),
+                    const Text(
+                      "OK",
+                    ),
+                    Divider(
+                      color: Theme.of(context).dividerColor,
+                    ),
+                  ],
+                ),
+              ),
+            ],
+          );
+        },
+      );
+    } else {
+      if (choose == 1) {
+        gender = "Male";
+      } else if (choose == 2) {
+        gender = "Female";
+      }
+      data.set(
+        gender,
+        data.weight,
+        data.wakeTime,
+        data.bedTime,
+      );
+      // Navigator.of(context).pushNamed(WeightScreen.routeName);
+    }
   }
 
   @override
   Widget build(BuildContext context) {
+    final fbData = Provider.of<FirebaseProvider>(context);
     bool flag = false;
-    int choose = 0;
     return Scaffold(
-        backgroundColor: Theme.of(context).scaffoldBackgroundColor,
-        body: SafeArea(
-          child: Center(
+      backgroundColor: Theme.of(context).scaffoldBackgroundColor,
+      body: SafeArea(
+        child: Center(
+          child: Padding(
+            padding: const EdgeInsets.all(8.0),
             child: Column(
               mainAxisAlignment: MainAxisAlignment.spaceEvenly,
               children: [
-                Container(
+                SizedBox(
                   width: MediaQuery.of(context).size.width * 0.85,
                   child: Card(
                     color: const Color.fromARGB(255, 153, 202, 241),
@@ -89,7 +136,8 @@ class _GenderScreenState extends State<GenderScreen> {
                                 color: Theme.of(context).iconTheme.color,
                                 size: 15,
                               ),
-                              checkedColor: Color.fromARGB(255, 153, 202, 241),
+                              checkedColor:
+                                  const Color.fromARGB(255, 153, 202, 241),
                             ),
                             Padding(
                               padding: const EdgeInsets.all(8.0),
@@ -113,11 +161,12 @@ class _GenderScreenState extends State<GenderScreen> {
                               onTap: (selected) {
                                 if (flag == true) {
                                   flag = false;
-                                  setState(() {
-                                    selected = false;
-                                    print(choose);
-                                    flag = selected!;
-                                  });
+                                  setState(
+                                    () {
+                                      selected = false;
+                                      flag = selected!;
+                                    },
+                                  );
                                 }
                                 choose = 2;
                                 flag = selected!;
@@ -127,7 +176,8 @@ class _GenderScreenState extends State<GenderScreen> {
                                 color: Theme.of(context).iconTheme.color,
                                 size: 15,
                               ),
-                              checkedColor: Color.fromARGB(255, 153, 202, 241),
+                              checkedColor:
+                                  const Color.fromARGB(255, 153, 202, 241),
                               size: 25,
                             ),
                             Padding(
@@ -158,57 +208,19 @@ class _GenderScreenState extends State<GenderScreen> {
                   onPressed: () {
                     setState(
                       () {
-                        //TODO add the gender to the database
-                        if (choose == 0) {
-                          showDialog(
-                            context: context,
-                            builder: (context) {
-                              return AlertDialog(
-                                title: const Text(
-                                  "Opps Sorry",
-                                ),
-                                content: const Text("Please choose one gender"),
-                                actions: [
-                                  TextButton(
-                                    onPressed: () {
-                                      Navigator.of(context).pop();
-                                    },
-                                    child: Column(
-                                      children: [
-                                        Divider(
-                                          color: Theme.of(context).dividerColor,
-                                        ),
-                                        const Text(
-                                          "OK",
-                                        ),
-                                        Divider(
-                                          color: Theme.of(context).dividerColor,
-                                        ),
-                                      ],
-                                    ),
-                                  ),
-                                ],
-                              );
-                            },
-                          );
-                        } else {
-                          if (choose == 1) {
-                            data.gender = "Male";
-                            updateRecord();
-                          } else if (choose == 2) {
-                            data.gender = "Female";
-                            updateRecord();
-                          }
-                          Navigator.of(context).pushNamed(
-                            WeightScreen.routeName,
-                            arguments: data,
-                          );
-                        }
+                        setGender();
+                        fbData.tempdata.set(
+                          data.gender,
+                          data.bedTime,
+                          data.wakeTime,
+                          data.weight,
+                        );
+                        fbData.updateRecord(fbData.tempdata.uid);
+                        debugPrint(fbData.tempdata.gender);
                       },
                     );
                   },
-                  // style:
-                  child: Container(
+                  child: SizedBox(
                     width: 100,
                     child: Row(
                       mainAxisAlignment: MainAxisAlignment.center,
@@ -228,6 +240,8 @@ class _GenderScreenState extends State<GenderScreen> {
               ],
             ),
           ),
-        ));
+        ),
+      ),
+    );
   }
 }
